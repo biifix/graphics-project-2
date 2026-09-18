@@ -1,0 +1,25 @@
+{
+  "teamName": "Rand0m",
+  "teamMembers": [
+    {
+      "name": "Hanjing Chen",
+      "github": "hanjingc",
+      "email": "hanjingc@student.unimelb.edu.au"
+    },
+    {
+      "name": "Xiaoxiao Peng",
+      "github": "xiaoxiaop1",
+      "email": "xiaoxiaop1@student.unimelb.edu.au"
+    },
+    {
+      "name": "Sihan Zhu",
+      "github": "sihzhu1-code",
+      "email": "sihzhu1@student.unimelb.edu.au"
+    },
+    {
+      "name": "Huimin Peng",
+      "github": "ViolaHM-14",
+      "email": "huimpeng@student.unimelb.edu.au"
+    }
+  ]
+}
