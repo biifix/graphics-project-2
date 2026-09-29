@@ -12,6 +12,8 @@ public class IntroTutorialController : MonoBehaviour
     [Header("Tutorial Prompt")]
     [SerializeField] private TutorialPromptController tutorialPrompt;
 
+    [SerializeField] private GameObject taskTracker;
+
     private void Start()
     {
         ShowIntro();
@@ -20,6 +22,7 @@ public class IntroTutorialController : MonoBehaviour
     private void ShowIntro()
     {
         introTutorialPanel.SetActive(true);
+        taskTracker.SetActive(false);
 
         if (playerMovement != null)
         {
@@ -44,6 +47,7 @@ public class IntroTutorialController : MonoBehaviour
     public void BeginShift()
     {
         introTutorialPanel.SetActive(false);
+        taskTracker.SetActive(true);
 
         if (playerMovement != null)
         {
