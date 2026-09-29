@@ -11,6 +11,9 @@ public class TutorialAController : MonoBehaviour
     [SerializeField] private string physicalDateRange = "2140-2150";
 
     [Header("Tutorial UI")]
+    [SerializeField] private TutorialPromptController tutorialPrompt;
+
+    [Tooltip("Legacy scene references. These are hidden so tutorial messages share one UI slot.")]
     [SerializeField] private TMP_Text confirmMatchText;
     [SerializeField] private TMP_Text feedbackText;
 
@@ -30,11 +33,15 @@ public class TutorialAController : MonoBehaviour
             playerCamera = Camera.main.transform;
         }
 
+        if (tutorialPrompt == null)
+        {
+            tutorialPrompt = FindFirstObjectByType<TutorialPromptController>();
+        }
+
+        // Keep the old scene objects for compatibility, but use the shared
+        // tutorial message slot so prompts never overlap on screen.
         if (confirmMatchText != null)
         {
-            confirmMatchText.text = "Press [C] to Confirm Match";
-
-            // Do not show it immediately when the game starts
             confirmMatchText.gameObject.SetActive(false);
         }
 
@@ -51,8 +58,12 @@ public class TutorialAController : MonoBehaviour
 
         CheckArchiveInView();
 
+        bool toggleTutorialComplete =
+            tutorialPrompt == null || tutorialPrompt.IsToggleTutorialComplete;
+
         if (
             lookingAtArchive &&
+            toggleTutorialComplete &&
             Keyboard.current != null &&
             Keyboard.current.cKey.wasPressedThisFrame
         )
@@ -94,9 +105,16 @@ public class TutorialAController : MonoBehaviour
             }
         }
 
-        if (confirmMatchText != null)
+        if (tutorialPrompt != null && tutorialPrompt.IsToggleTutorialComplete)
         {
-            confirmMatchText.gameObject.SetActive(lookingAtArchive);
+            if (lookingAtArchive)
+            {
+                tutorialPrompt.ShowMessage("Press [C] to Confirm Match");
+            }
+            else
+            {
+                tutorialPrompt.HideMessage();
+            }
         }
     }
 
@@ -104,7 +122,11 @@ public class TutorialAController : MonoBehaviour
     {
         yield return new WaitForSeconds(3f);
 
-        if (feedbackText != null)
+        if (tutorialPrompt != null)
+        {
+            tutorialPrompt.HideMessage();
+        }
+        else if (feedbackText != null)
         {
             feedbackText.gameObject.SetActive(false);
         }
@@ -119,12 +141,11 @@ public class TutorialAController : MonoBehaviour
         {
             confirmed = true;
 
-            if (confirmMatchText != null)
+            if (tutorialPrompt != null)
             {
-                confirmMatchText.gameObject.SetActive(false);
+                tutorialPrompt.ShowMessage("Match confirmed.");
             }
-
-            if (feedbackText != null)
+            else if (feedbackText != null)
             {
                 feedbackText.text = "Match confirmed.";
                 feedbackText.gameObject.SetActive(true);
@@ -136,7 +157,11 @@ public class TutorialAController : MonoBehaviour
         }
         else
         {
-            if (feedbackText != null)
+            if (tutorialPrompt != null)
+            {
+                tutorialPrompt.ShowMessage("Records do not match.");
+            }
+            else if (feedbackText != null)
             {
                 feedbackText.text = "Records do not match.";
                 feedbackText.gameObject.SetActive(true);

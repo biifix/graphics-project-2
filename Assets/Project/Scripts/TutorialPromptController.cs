@@ -8,10 +8,13 @@ public class TutorialPromptController : MonoBehaviour
 
     private int qPressCount = 0;
 
+    public bool IsToggleTutorialComplete { get; private set; }
+
     private void Start()
     {
         if (siiTogglePrompt != null)
         {
+            siiTogglePrompt.text = "Press [Q] to Toggle SII";
             siiTogglePrompt.gameObject.SetActive(true);
         }
     }
@@ -29,8 +32,30 @@ public class TutorialPromptController : MonoBehaviour
 
             if (qPressCount >= 2)
             {
-                siiTogglePrompt.gameObject.SetActive(false);
+                IsToggleTutorialComplete = true;
+                HideMessage();
             }
         }
+    }
+
+    public void ShowMessage(string message)
+    {
+        if (siiTogglePrompt == null)
+        {
+            return;
+        }
+
+        siiTogglePrompt.text = message;
+        siiTogglePrompt.gameObject.SetActive(true);
+    }
+
+    public void HideMessage()
+    {
+        if (siiTogglePrompt == null)
+        {
+            return;
+        }
+
+        siiTogglePrompt.gameObject.SetActive(false);
     }
 }
