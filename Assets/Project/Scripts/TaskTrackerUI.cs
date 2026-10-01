@@ -8,7 +8,6 @@ public class TaskTrackerUI : MonoBehaviour
     [SerializeField] private GameObject contentPanel;
 
     [Header("Text")]
-    [SerializeField] private TMP_Text taskTitleText;
     [SerializeField] private TMP_Text objectiveText;
     [SerializeField] private TMP_Text toggleIconText;
 
@@ -50,13 +49,8 @@ public class TaskTrackerUI : MonoBehaviour
         }
     }
 
-    public void SetTask(string title, string objective)
+    public void SetTask(string objective)
     {
-        if (taskTitleText != null)
-        {
-            taskTitleText.text = title;
-        }
-
         if (objectiveText != null)
         {
             objectiveText.text = objective;

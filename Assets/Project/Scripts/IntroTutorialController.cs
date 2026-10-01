@@ -13,6 +13,8 @@ public class IntroTutorialController : MonoBehaviour
     [SerializeField] private TutorialPromptController tutorialPrompt;
 
     [SerializeField] private GameObject taskTracker;
+    [SerializeField] private TaskManager taskManager;
+    
 
     private void Start()
     {
@@ -62,9 +64,12 @@ public class IntroTutorialController : MonoBehaviour
         if (tutorialPrompt != null)
         {
             tutorialPrompt.enabled = true;
-            tutorialPrompt.ShowMessage(
-                "Press [Q] to Toggle SII"
-            );
+            tutorialPrompt.HideMessage();
+        }
+
+        if (taskManager != null)
+        {
+            taskManager.StartTasks();
         }
 
         Cursor.lockState = CursorLockMode.Locked;
