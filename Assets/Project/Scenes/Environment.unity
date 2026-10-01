@@ -5821,6 +5821,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TutorialPromptController
   siiTogglePrompt: {fileID: 0}
+  taskManager: {fileID: 807205968}
 --- !u!114 &596947633
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7853,7 +7854,11 @@ MonoBehaviour:
   - id: reach_tutorial_desk
     objective: Go to the tutorial desk.
   - id: turn_off_sii
-    objective: Press [Q] to turn off SII.
+    objective: 'Press [Q] to turn off SII.
+
+      See the difference.'
+  - id: reach_central_hub
+    objective: Go to the Central Hub to get your work.
 --- !u!1001 &813692489
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -18350,7 +18355,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TaskTrackerUI
   contentPanel: {fileID: 1714787839}
-  objectiveText: {fileID: 0}
+  objectiveText: {fileID: 592194209}
   toggleIconText: {fileID: 376676262}
   startExpanded: 0
 --- !u!1001 &1930762549

@@ -5,37 +5,35 @@ using TMPro;
 public class TutorialPromptController : MonoBehaviour
 {
     [SerializeField] private TMP_Text siiTogglePrompt;
-
-    private int qPressCount = 0;
+    [SerializeField] private TaskManager taskManager;
 
     public bool IsToggleTutorialComplete { get; private set; }
 
     private void Start()
     {
-        if (siiTogglePrompt != null)
-        {
-            siiTogglePrompt.text = "Press [Q] to Toggle SII";
-            siiTogglePrompt.gameObject.SetActive(true);
-        }
+        HideMessage();
     }
 
     private void Update()
     {
-        if (siiTogglePrompt == null || !siiTogglePrompt.gameObject.activeSelf)
+        if (Keyboard.current?.qKey.wasPressedThisFrame != true)
         {
             return;
         }
 
-        if (Keyboard.current?.qKey.wasPressedThisFrame == true)
+        if (taskManager == null)
         {
-            qPressCount++;
-
-            if (qPressCount >= 2)
-            {
-                IsToggleTutorialComplete = true;
-                HideMessage();
-            }
+            return;
         }
+
+        if (taskManager.CurrentTaskId != "turn_off_sii")
+        {
+            return;
+        }
+
+        IsToggleTutorialComplete = true;
+        taskManager.CompleteTask("turn_off_sii");
+        HideMessage();
     }
 
     public void ShowMessage(string message)
