@@ -4538,7 +4538,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: 4120754108402150, guid: 185a5eff157b4ca488205ec24d93caf7, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1532998501}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 185a5eff157b4ca488205ec24d93caf7, type: 3}
 --- !u!4 &471750657 stripped
@@ -7859,6 +7862,10 @@ MonoBehaviour:
       See the difference.'
   - id: reach_central_hub
     objective: Go to the Central Hub to get your work.
+  - id: talk_to_staff
+    objective: Talk to the staff member in the Central Hub.
+  - id: go_to_records_bay
+    objective: Go to Records Bay and retrieve the fire incident records.
 --- !u!1001 &813692489
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -8967,6 +8974,7 @@ GameObject:
   - component: {fileID: 915652122}
   - component: {fileID: 915652124}
   - component: {fileID: 915652123}
+  - component: {fileID: 915652125}
   m_Layer: 0
   m_Name: CentralHubTrigger
   m_TagString: Untagged
@@ -9024,6 +9032,20 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 10.475744, y: 3.0604424, z: 9.089045}
   m_Center: {x: -1.0183258, y: 1.0302212, z: -3.6864748}
+--- !u!114 &915652125
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 915652121}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0b2d11e56efcf6f40bec0070d9d43655, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TaskAreaTrigger
+  taskManager: {fileID: 807205968}
+  taskToComplete: reach_central_hub
 --- !u!1001 &923118780
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -13774,7 +13796,6 @@ Transform:
   - {fileID: 1825318041}
   - {fileID: 944618411}
   - {fileID: 1238873303}
-  - {fileID: 1532998501}
   - {fileID: 1606555467}
   - {fileID: 1341431131}
   - {fileID: 471750657}
@@ -15197,7 +15218,7 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 1415183821}
+    m_TransformParent: {fileID: 471750657}
     m_Modifications:
     - target: {fileID: 1612689225899264, guid: ddd1ee152c3ae0545a983f8f0ce92bd3, type: 3}
       propertyPath: m_Name
@@ -15217,31 +15238,31 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4745536915787940, guid: ddd1ee152c3ae0545a983f8f0ce92bd3, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -3.333847
+      value: 8.6500025
       objectReference: {fileID: 0}
     - target: {fileID: 4745536915787940, guid: ddd1ee152c3ae0545a983f8f0ce92bd3, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.0072908625
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4745536915787940, guid: ddd1ee152c3ae0545a983f8f0ce92bd3, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -4.564064
+      value: 3.5599995
       objectReference: {fileID: 0}
     - target: {fileID: 4745536915787940, guid: ddd1ee152c3ae0545a983f8f0ce92bd3, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.9986016
+      value: 0.74349606
       objectReference: {fileID: 0}
     - target: {fileID: 4745536915787940, guid: ddd1ee152c3ae0545a983f8f0ce92bd3, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.00079821056
+      value: 8.731149e-10
       objectReference: {fileID: 0}
     - target: {fileID: 4745536915787940, guid: ddd1ee152c3ae0545a983f8f0ce92bd3, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.052860137
+      value: -0.6687404
       objectReference: {fileID: 0}
     - target: {fileID: 4745536915787940, guid: ddd1ee152c3ae0545a983f8f0ce92bd3, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0.000043303215
+      value: 1.2732926e-10
       objectReference: {fileID: 0}
     - target: {fileID: 4745536915787940, guid: ddd1ee152c3ae0545a983f8f0ce92bd3, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -20523,7 +20544,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4567004968906420772, guid: 294512bea9b0a4fb089d2bb3f9ba7064, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 1.4
+      value: 1.429
       objectReference: {fileID: 0}
     - target: {fileID: 4567004968906420772, guid: 294512bea9b0a4fb089d2bb3f9ba7064, type: 3}
       propertyPath: m_LocalPosition.y
@@ -20531,7 +20552,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4567004968906420772, guid: 294512bea9b0a4fb089d2bb3f9ba7064, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -2.79999
+      value: -2.175
       objectReference: {fileID: 0}
     - target: {fileID: 4567004968906420772, guid: 294512bea9b0a4fb089d2bb3f9ba7064, type: 3}
       propertyPath: m_LocalRotation.w
