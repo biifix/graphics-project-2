@@ -8,6 +8,7 @@ public class Interactable : MonoBehaviour{
     public string getPrompt() {
         return interactionPrompt;
     }
+
     
     public virtual void Interact(){
         Debug.Log("Interacted with " + gameObject.name);
