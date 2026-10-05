@@ -16,6 +16,11 @@ public class StaffTaskInteractable : Interactable
         "Head to Records Bay to find the files."
     };
 
+    [SerializeField, TextArea]
+    private string greeting = "Good day, mate! How's it going?";
+
+    private bool isTaskDialogue;
+
     [Header("Player controls")]
     [SerializeField] private PlayerMovement playerMovement;
     [SerializeField] private PlayerView playerView;
@@ -45,10 +50,10 @@ public class StaffTaskInteractable : Interactable
             playerInteraction == null)
             return;
 
-        if (taskManager.CurrentTaskId != "talk_to_staff")
-            return;
+        isTaskDialogue = taskManager.CurrentTaskId == "talk_to_staff";
 
-        if (dialogueLines == null || dialogueLines.Length == 0)
+        if (isTaskDialogue &&
+            (dialogueLines == null || dialogueLines.Length == 0))
             return;
 
         movementWasEnabled = playerMovement.enabled;
@@ -79,21 +84,26 @@ public class StaffTaskInteractable : Interactable
 
         lineIndex++;
 
-        if (lineIndex < dialogueLines.Length)
+        if (isTaskDialogue && lineIndex < dialogueLines.Length)
         {
             ShowLine();
         }
         else
         {
             EndDialogue();
-            taskManager.CompleteTask("talk_to_staff");
+
+            if (isTaskDialogue)
+                taskManager.CompleteTask("talk_to_staff");
         }
     }
 
     private void ShowLine()
     {
-        dialogueText.text =
-            dialogueLines[lineIndex] + "\n\n[E] Continue";
+        string line = isTaskDialogue
+            ? dialogueLines[lineIndex]
+            : greeting;
+
+        dialogueText.text = line + "\n\n[E] Continue";
     }
 
     private void EndDialogue()
