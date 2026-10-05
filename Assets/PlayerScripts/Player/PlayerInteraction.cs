@@ -37,7 +37,9 @@ public class PlayerInteraction : MonoBehaviour
             if (interactable != null){
                 interactionPrompt.showPrompt(interactable.getPrompt());
 
-                if (Keyboard.current?.eKey.wasPressedThisFrame == true) {
+                if (Keyboard.current != null &&
+                    Keyboard.current[interactable.InteractionKey].wasPressedThisFrame) 
+                {
                     interactionPrompt.hidePrompt();
                     interactable.Interact();
                 }
