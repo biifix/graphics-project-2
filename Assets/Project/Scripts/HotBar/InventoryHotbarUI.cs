@@ -33,6 +33,12 @@ public class InventoryHotbarUI : MonoBehaviour
         RefreshSelection();
     }
 
+    public void SelectSlot(int index)
+    {
+        SelectedIndex = Mathf.Clamp(index, 0, 2);
+        RefreshSelection();
+    }
+
     private void RefreshSelection()
     {
         for (int i = 0; i < 3; i++)

@@ -3,9 +3,9 @@ using UnityEngine.InputSystem;
 
 public class InteractionManager : MonoBehaviour {
 
-    public static InteractionManager instance { 
-        get; 
-        private set; 
+    public static InteractionManager instance {
+        get;
+        private set;
     }
 
     [Header("Inspect Settings")]
@@ -15,7 +15,13 @@ public class InteractionManager : MonoBehaviour {
     [SerializeField] private PlayerMovement playerMovement;
     [SerializeField] private PlayerView playerView;
     [SerializeField] private PlayerInteraction playerInteraction;
-    
+    [SerializeField] private InventoryHotbarUI hotbarUI;
+    private int startFrame;
+    private bool interactionWasEnabled;
+    private bool hotbarWasEnabled;
+    public bool CanInspect => !isInspecting && inspectPos != null &&
+        playerInteraction != null && hotbarUI != null;
+
     private GameObject currObject;
 
     private Vector3 initPos;
@@ -33,10 +39,12 @@ public class InteractionManager : MonoBehaviour {
             return;
         }
         instance = this;
+        if (hotbarUI == null)
+            hotbarUI = FindFirstObjectByType<InventoryHotbarUI>(FindObjectsInactive.Include);
     }
 
     private void Update() {
-        if (!isInspecting) {
+        if (!isInspecting || currObject == null || Time.frameCount == startFrame) {
             return;
         }
 
@@ -44,7 +52,7 @@ public class InteractionManager : MonoBehaviour {
 
         if (rotateObject != null) {
             rotateObject.rotate();
-        }    
+        }
 
         if (Keyboard.current?.eKey.wasPressedThisFrame == true || Keyboard.current?.escapeKey.wasPressedThisFrame == true) {
             stopInspect();
@@ -53,12 +61,16 @@ public class InteractionManager : MonoBehaviour {
 
     public void startInspect(GameObject objectToInspect) {
 
-        if (isInspecting) {
+        if (!CanInspect || objectToInspect == null) {
             return;
         }
 
         isInspecting = true;
         currObject = objectToInspect;
+        startFrame = Time.frameCount;
+        interactionWasEnabled = playerInteraction.enabled;
+        hotbarWasEnabled = hotbarUI.enabled;
+        hotbarUI.enabled = false;
 
         initPos = currObject.transform.position;
         initRotation = currObject.transform.rotation;
@@ -68,18 +80,14 @@ public class InteractionManager : MonoBehaviour {
         currObject.transform.localPosition = Vector3.zero;
         currObject.transform.localRotation = Quaternion.identity;
 
-        // Disable player movement
-        /*
-        playerMovement.enabled = false;
-        playerView.enabled = false;
-        */
         playerInteraction.enabled = false;
 
         Debug.Log("Inspecting " + currObject.name);
     }
 
     public bool IsCarryingPhoto() {
-        return isInspecting && currObject != null;
+        GameObject item = InventoryManager.Instance?.SelectedItem;
+        return item != null && item.GetComponent<EvidenceObject>() != null;
     }
 
     public GameObject PlacePhotoOnScanner(Transform scanPoint) {
@@ -87,7 +95,11 @@ public class InteractionManager : MonoBehaviour {
             return null;
         }
 
-        GameObject placedPhoto = currObject;
+        GameObject placedPhoto = InventoryManager.Instance.SelectedItem;
+        if (isInspecting)
+            stopInspect();
+        InventoryManager.Instance.RemoveItem(placedPhoto);
+        placedPhoto.SetActive(true);
 
         placedPhoto.transform.SetParent(scanPoint);
         placedPhoto.transform.localPosition = Vector3.zero;
@@ -95,12 +107,11 @@ public class InteractionManager : MonoBehaviour {
 
         currObject = null;
         isInspecting = false;
-        playerInteraction.enabled = true;
 
         return placedPhoto;
     }
 
-        
+
     public void stopInspect(){
 
         if (!isInspecting) {
@@ -109,19 +120,34 @@ public class InteractionManager : MonoBehaviour {
 
         isInspecting = false;
 
-        currObject.transform.SetParent(parentObject);
-        currObject.transform.position = initPos;
-        currObject.transform.rotation = initRotation;
+        if (InventoryManager.Instance != null)
+            InventoryManager.Instance.RefreshHeldItem();
+        else if (currObject != null)
+        {
+            currObject.transform.SetParent(parentObject);
+            currObject.transform.position = initPos;
+            currObject.transform.rotation = initRotation;
+        }
         currObject = null;
 
-        // enable player movement
-        /*
-        playerMovement.enabled = true;
-        playerView.enabled = true;
-        */
-        playerInteraction.enabled = true;
+        if (playerInteraction != null)
+            playerInteraction.enabled = interactionWasEnabled;
+        if (hotbarUI != null)
+            hotbarUI.enabled = hotbarWasEnabled;
 
         Debug.Log("Stopped inspecting");
-    
+
+    }
+
+    private void OnDisable()
+    {
+        if (isInspecting)
+            stopInspect();
+    }
+
+    private void OnDestroy()
+    {
+        if (instance == this)
+            instance = null;
     }
 }
